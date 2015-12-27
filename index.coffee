@@ -3,6 +3,7 @@ Promise = require "bluebird"
 
 Promise.promisifyAll gpio
 
+isReverseDirection = true
 isReverseDirection = false
 isDebug = false
 
@@ -12,14 +13,11 @@ if isReverseDirection
 	ports = [12, 16, 7, 18]
 outputs = [1, 1, 0, 0]
 
-
-gpio.openAsync ports[0], "output"
-.then (error) ->
-	gpio.openAsync ports[1], "output"
-.then (error) ->
-	gpio.openAsync ports[2], "output"
-.then (error) ->
-	gpio.openAsync ports[3], "output"
+Promise.all do ->
+	portsToOpen = []
+	for port in ports
+		portsToOpen.push(gpio.openAsync port, "output")
+	portsToOpen
 .then (error) ->
 	console.log "Starting"
 	i = 0
