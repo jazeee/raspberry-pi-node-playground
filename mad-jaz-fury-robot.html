@@ -1,0 +1,23 @@
+<html>
+<head>
+</head>
+<body>
+<h1>Mad Jaz Fury Robot</h1>
+<button value="right/faster">Faster on Right (Turn Left)</button>
+<button value="left/faster">Faster Left (Turn Right)</button>
+<br/>
+<button value="right/slower">Slower Right (Turn Left)</button>
+<button value="left/slower">Slower Left (Turn Right)</button>
+<br/>
+<button value="stop">Stop</button>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+console.log("Start");
+$("button").click(
+function(event){
+	console.log(event);
+	$.get("/" + event.currentTarget.value)
+});
+</script>
+</body>

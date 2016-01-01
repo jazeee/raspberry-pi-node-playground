@@ -47,14 +47,22 @@ class Motor
 leftMotor = new Motor leftPort
 rightMotor = new Motor rightPort
 
-dispatcher.onGet "/up", (request, response) ->
+dispatcher.onGet "/left/faster", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
-	response.end "Moving Up"
+	response.end "Moving Left Faster"
 	leftMotor.goFaster()
-dispatcher.onGet "/down", (request, response) ->
+dispatcher.onGet "/left/slower", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
-	response.end "Moving Down"
+	response.end "Moving Left Slower"
+	leftMotor.goSlower()
+dispatcher.onGet "/right/faster", (request, response) ->
+	response.writeHead 200, {'Content-type': "text/plain"}
+	response.end "Moving Right Faster"
 	rightMotor.goFaster()
+dispatcher.onGet "/right/slower", (request, response) ->
+	response.writeHead 200, {'Content-type': "text/plain"}
+	response.end "Moving Right Slower"
+	rightMotor.goSlower()
 dispatcher.onGet "/stop", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Stopping"
@@ -63,7 +71,7 @@ dispatcher.onGet "/stop", (request, response) ->
 
 
 dispatcher.onGet "/", (request, response) ->
-	index = fs.createReadStream "index.html"
+	index = fs.createReadStream "mad-jaz-fury-robot.html"
 	index.pipe response
 
 server = http.createServer (request, response) ->
