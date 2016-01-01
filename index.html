@@ -1,0 +1,20 @@
+<html>
+<head>
+</head>
+<body>
+<h1>Chopper</h1>
+<button value="up">Up</button>
+<button value="down">Down</button>
+<button value="stop">Stop</button>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+console.log("Start");
+$("button").click( 
+function(event){
+	console.log(event);
+	$.get("/" + event.currentTarget.value)
+});
+</script>
+</body>
+

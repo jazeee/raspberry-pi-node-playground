@@ -2,6 +2,7 @@
   "name": "NodeRaspberryPi",
   "dependencies": {
     "bluebird": "^3.1.1",
+    "httpdispatcher": "^0.4.0",
     "pi-gpio": "0.0.8"
   }
 }
