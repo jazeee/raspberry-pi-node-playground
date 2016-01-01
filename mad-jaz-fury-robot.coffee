@@ -10,6 +10,7 @@ isDebug = false
 
 leftPort = 16
 rightPort = 18
+ports = [leftPort, rightPort]
 
 class Motor
 	constructor: (port) ->
@@ -80,12 +81,12 @@ Promise.all do ->
 		portsToOpen.push(gpio.openAsync port, "output")
 	portsToOpen
 .then (error) ->
-	console.log "Starting"
+	console.log "Started GPIO"
 .catch ->
 	setTimeout closePorts, 2000
 
 closePorts = ->
-	console.log "********** Closing **********"
+	console.log "********** Closing GPIO ports**********"
 	for port in ports
 		gpio.close port
 
