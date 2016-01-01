@@ -27,6 +27,10 @@ class Motor
 		@speed = Math.max 0, @speed
 		@updateTimer()
 
+	goMaxSpeed: =>
+		@speed = 199
+		@updateTimer()
+
 	updateTimer: =>
 		clearInterval @motorInterval
 		@motorInterval = undefined
@@ -63,6 +67,19 @@ dispatcher.onGet "/right/slower", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Right Slower"
 	rightMotor.goSlower()
+dispatcher.onGet "/left/max", (request, response) ->
+	response.writeHead 200, {'Content-type': "text/plain"}
+	response.end "Moving Left Max"
+	leftMotor.goMaxSpeed()
+dispatcher.onGet "/right/max", (request, response) ->
+	response.writeHead 200, {'Content-type': "text/plain"}
+	response.end "Moving Right Max"
+	rightMotor.goMaxSpeed()
+dispatcher.onGet "/full-speed", (request, response) ->
+	response.writeHead 200, {'Content-type': "text/plain"}
+	response.end "Moving Full Speed"
+	leftMotor.goMaxSpeed()
+	rightMotor.goMaxSpeed()
 dispatcher.onGet "/stop", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Stopping"
