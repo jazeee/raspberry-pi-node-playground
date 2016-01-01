@@ -51,12 +51,10 @@ dispatcher.onGet "/up", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Up"
 	leftMotor.goFaster()
-	moveMotor true
 dispatcher.onGet "/down", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Down"
 	rightMotor.goFaster()
-	moveMotor false
 dispatcher.onGet "/stop", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Stopping"
