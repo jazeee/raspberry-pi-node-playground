@@ -17,37 +17,33 @@ class Motor
 		@speed = 0
 		@port = port
 
+	startMotor: =>
+		if @speed > 0
+			timeDelay = 99 / @speed
+			console.log new Date(), timeDelay
+			gpio.writeAsync @port, 1
+			.delay 1000 - timeDelay
+			.then => gpio.writeAsync @port, 0
+			.delay timeDelay
+			.then @startMotor
+		else
+			gpio.writeAsync @port, 0
+			.delay 250
+			.then @startMotor
+
 	goFaster: =>
 		@speed++
 		@speed = Math.min 99, @speed
-		@updateTimer()
 
 	goSlower: =>
 		@speed--
 		@speed = Math.max 0, @speed
-		@updateTimer()
 
 	goMaxSpeed: =>
 		@speed = 99
-		@updateTimer()
 
-	updateTimer: =>
-		clearInterval @motorInterval
-		@motorInterval = undefined
-		if @speed > 0
-			timeDelay = 99 / @speed
-			@motorInterval = setInterval( =>
-				gpio.writeAsync @port, 1
-				.delay 100 - timeDelay
-				.then => gpio.writeAsync @port, 0
-				.delay timeDelay
-			1)
-		else
-			gpio.writeAsync @port, 0
-		return timeDelay
 	stop: =>
 		@speed = 0
-		@updateTimer()
 
 leftMotor = new Motor leftPort
 rightMotor = new Motor rightPort
@@ -106,7 +102,11 @@ Promise.all do ->
 	portsToOpen
 .then (error) ->
 	console.log "Started GPIO"
-.catch ->
+	leftMotor.startMotor()
+	rightMotor.startMotor()
+	return
+.catch (error) ->
+	console.error error
 	setTimeout closePorts, 2000
 
 closePorts = ->
