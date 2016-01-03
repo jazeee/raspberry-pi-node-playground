@@ -22,13 +22,13 @@ class Motor
 			timeDelay = 99 / @speed
 			console.log new Date(), timeDelay
 			gpio.writeAsync @port, 1
-			.delay 1000 - timeDelay
+			.delay 100 - timeDelay
 			.then => gpio.writeAsync @port, 0
 			.delay timeDelay
 			.then @startMotor
 		else
 			gpio.writeAsync @port, 0
-			.delay 250
+			.delay 50
 			.then @startMotor
 
 	goFaster: =>
