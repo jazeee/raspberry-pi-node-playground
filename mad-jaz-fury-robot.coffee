@@ -19,7 +19,7 @@ class Motor
 
 	goFaster: =>
 		@speed++
-		@speed = Math.min 199, @speed
+		@speed = Math.min 99, @speed
 		@updateTimer()
 
 	goSlower: =>
@@ -28,22 +28,23 @@ class Motor
 		@updateTimer()
 
 	goMaxSpeed: =>
-		@speed = 199
+		@speed = 99
 		@updateTimer()
 
 	updateTimer: =>
 		clearInterval @motorInterval
 		@motorInterval = undefined
 		if @speed > 0
-			timeDelay = 199 / @speed
+			timeDelay = 99 / @speed
 			@motorInterval = setInterval( =>
 				gpio.writeAsync @port, 1
-				.delay 200 - timeDelay
+				.delay 100 - timeDelay
 				.then => gpio.writeAsync @port, 0
-			200)
+				.delay timeDelay
+			1)
 		else
 			gpio.writeAsync @port, 0
-
+		return timeDelay
 	stop: =>
 		@speed = 0
 		@updateTimer()
