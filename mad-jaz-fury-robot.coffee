@@ -47,7 +47,7 @@ class Motor
 
 	goSlower: =>
 		@speed--
-		@speed = Math.max 0, @speed
+		@speed = Math.max -99, @speed
 
 	goMaxSpeed: =>
 		@speed = 99
