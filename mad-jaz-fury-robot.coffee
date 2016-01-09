@@ -8,26 +8,36 @@ Promise.promisifyAll gpio
 
 isDebug = false
 
-leftPort = 16
-rightPort = 18
-ports = [leftPort, rightPort]
+leftPorts = [16, 18]
+rightPorts = [3, 5]
+ports = [leftPorts..., rightPorts...]
 
 class Motor
-	constructor: (port) ->
+	constructor: (ports) ->
 		@speed = 0
-		@port = port
+		@ports = ports
+
+	updateMotorPort: (portIndex) =>
+		speed = Math.abs @speed
+		timeDelay = 99 / speed
+		console.log new Date(), timeDelay
+		otherPortIndex = 1 - portIndex
+		gpio.writeAsync @ports[otherPortIndex], 0
+		.then => gpio.writeAsync @ports[portIndex], 1
+		.delay 100 - timeDelay
+		.then => gpio.writeAsync @ports[portIndex], 0
+		.delay timeDelay
 
 	startMotor: =>
 		if @speed > 0
-			timeDelay = 99 / @speed
-			console.log new Date(), timeDelay
-			gpio.writeAsync @port, 1
-			.delay 100 - timeDelay
-			.then => gpio.writeAsync @port, 0
-			.delay timeDelay
+			@updateMotorPort 0
+			.then @startMotor
+		else if @speed < 0
+			@updateMotorPort 1
 			.then @startMotor
 		else
-			gpio.writeAsync @port, 0
+			gpio.writeAsync @ports[0], 0
+			.then => gpio.writeAsync @ports[1], 0
 			.delay 50
 			.then @startMotor
 
@@ -45,8 +55,8 @@ class Motor
 	stop: =>
 		@speed = 0
 
-leftMotor = new Motor leftPort
-rightMotor = new Motor rightPort
+leftMotor = new Motor leftPorts
+rightMotor = new Motor rightPorts
 
 dispatcher.onGet "/left/faster", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
