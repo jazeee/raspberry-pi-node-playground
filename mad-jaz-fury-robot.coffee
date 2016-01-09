@@ -58,6 +58,7 @@ class Motor
 leftMotor = new Motor leftPorts
 rightMotor = new Motor rightPorts
 
+dispatcher.setStatic "resources"
 dispatcher.onGet "/left/faster", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Left Faster"
