@@ -1,7 +1,8 @@
 gpio = require "pi-gpio"
 Promise = require "bluebird"
 http = require "http"
-dispatcher = require "httpdispatcher"
+express = require "express"
+app = express()
 fs = require "fs"
 
 Promise.promisifyAll gpio
@@ -58,53 +59,47 @@ class Motor
 leftMotor = new Motor leftPorts
 rightMotor = new Motor rightPorts
 
-dispatcher.setStatic "resources"
-dispatcher.onGet "/left/faster", (request, response) ->
+app.use "/resources", express.static 'resources'
+app.get "/left/faster", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Left Faster"
 	leftMotor.goFaster()
-dispatcher.onGet "/left/slower", (request, response) ->
+app.get "/left/slower", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Left Slower"
 	leftMotor.goSlower()
-dispatcher.onGet "/right/faster", (request, response) ->
+app.get "/right/faster", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Right Faster"
 	rightMotor.goFaster()
-dispatcher.onGet "/right/slower", (request, response) ->
+app.get "/right/slower", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Right Slower"
 	rightMotor.goSlower()
-dispatcher.onGet "/left/max", (request, response) ->
+app.get "/left/max", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Left Max"
 	leftMotor.goMaxSpeed()
-dispatcher.onGet "/right/max", (request, response) ->
+app.get "/right/max", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Right Max"
 	rightMotor.goMaxSpeed()
-dispatcher.onGet "/full-speed", (request, response) ->
+app.get "/full-speed", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Full Speed"
 	leftMotor.goMaxSpeed()
 	rightMotor.goMaxSpeed()
-dispatcher.onGet "/stop", (request, response) ->
+app.get "/stop", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Stopping"
 	leftMotor.stop()
 	rightMotor.stop()
 
 
-dispatcher.onGet "/", (request, response) ->
+app.get "/", (request, response) ->
+	response.writeHead 200, 'Content-Type': 'text/html'
 	index = fs.createReadStream "mad-jaz-fury-robot.html"
 	index.pipe response
-
-server = http.createServer (request, response) ->
-	try
-		console.log request.url
-		dispatcher.dispatch request, response
-	catch error
-		console.error error
 
 Promise.all do ->
 	portsToOpen = []
@@ -125,5 +120,6 @@ closePorts = ->
 	for port in ports
 		gpio.close port
 
+server = http.createServer app
 server.listen 8000, ->
 	console.log "Listenting on port 8000"
