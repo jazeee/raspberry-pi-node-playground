@@ -49,4 +49,4 @@ class Motor
 	stop: =>
 		@speed = 0
 
-module.exports = {Motor}
+module.exports.Motor = Motor

@@ -22,4 +22,4 @@ class Servo
 	setPosition: (position) ->
 		@position = position
 
-module.exports = {Servo}
+module.exports = Servo
