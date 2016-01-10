@@ -9,7 +9,8 @@ class Servo
 		@position = 0
 		@port = port
 
-	start: =>
+	setPosition: (position) ->
+		@position = position
 		delay = 0.5 + (@position / 180) * 2.0
 		start = now()
 		gpio.writeAsync @port, 1
@@ -18,10 +19,5 @@ class Servo
 				if (now() - start) >= delay
 					break
 			gpio.writeAsync @port, 0
-		.delay 20
-		.then @start
-
-	setPosition: (position) ->
-		@position = position
 
 module.exports = Servo
