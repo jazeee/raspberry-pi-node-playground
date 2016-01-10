@@ -5,7 +5,7 @@ express = require "express"
 app = express()
 fs = require "fs"
 Motor = require "./Motor"
-Servo = require "./Servo"
+servoPython = require "./Servo-python"
 
 isDebug = false
 
@@ -16,8 +16,6 @@ ports = [leftPorts..., rightPorts..., servoPort]
 
 leftMotor = new Motor leftPorts
 rightMotor = new Motor rightPorts
-
-servo = new Servo servoPort
 
 app.use "/resources", express.static 'resources'
 app.get "/left/faster", (request, response) ->
@@ -66,7 +64,7 @@ app.get "/servo", (request, response) ->
 	position = 180 * Math.random()
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Servo to #{position}"
-	servo.setPosition position
+	servoPython servoPort, position
 
 app.get "/", (request, response) ->
 	response.writeHead 200, 'Content-Type': 'text/html'
