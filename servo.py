@@ -7,9 +7,9 @@ import time
 servo = PWM.Servo()
 
 port = int(sys.argv[1])
-delay = int(sys.argv[2])
+delay = float(sys.argv[2])
 
-print port 
+print port
 print delay
 
 
