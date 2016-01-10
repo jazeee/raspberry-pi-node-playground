@@ -12,7 +12,7 @@ isDebug = false
 leftPorts = [16, 18]
 rightPorts = [3, 5]
 servoPort = 7
-ports = [leftPorts..., rightPorts...]
+ports = [leftPorts..., rightPorts..., servoPort]
 
 leftMotor = new Motor leftPorts
 rightMotor = new Motor rightPorts
