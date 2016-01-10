@@ -4,60 +4,20 @@ http = require "http"
 express = require "express"
 app = express()
 fs = require "fs"
-
-Promise.promisifyAll gpio
+Motor = require "./Motor"
+Servo = require "./Servo"
 
 isDebug = false
 
 leftPorts = [16, 18]
 rightPorts = [3, 5]
+servoPort = 7
 ports = [leftPorts..., rightPorts...]
-
-class Motor
-	constructor: (ports) ->
-		@speed = 0
-		@ports = ports
-
-	updateMotorPort: (portIndex) =>
-		speed = Math.abs @speed
-		timeDelay = 99 / speed
-		console.log new Date(), timeDelay
-		otherPortIndex = 1 - portIndex
-		gpio.writeAsync @ports[otherPortIndex], 0
-		.then => gpio.writeAsync @ports[portIndex], 1
-		.delay 100 - timeDelay
-		.then => gpio.writeAsync @ports[portIndex], 0
-		.delay timeDelay
-
-	startMotor: =>
-		if @speed > 0
-			@updateMotorPort 0
-			.then @startMotor
-		else if @speed < 0
-			@updateMotorPort 1
-			.then @startMotor
-		else
-			gpio.writeAsync @ports[0], 0
-			.then => gpio.writeAsync @ports[1], 0
-			.delay 50
-			.then @startMotor
-
-	goFaster: =>
-		@speed++
-		@speed = Math.min 99, @speed
-
-	goSlower: =>
-		@speed--
-		@speed = Math.max -99, @speed
-
-	goMaxSpeed: =>
-		@speed = 99
-
-	stop: =>
-		@speed = 0
 
 leftMotor = new Motor leftPorts
 rightMotor = new Motor rightPorts
+
+servo = new Servo servoPort
 
 app.use "/resources", express.static 'resources'
 app.get "/left/faster", (request, response) ->
@@ -94,7 +54,11 @@ app.get "/stop", (request, response) ->
 	response.end "Stopping"
 	leftMotor.stop()
 	rightMotor.stop()
-
+app.get "/servo-port", (request, response) ->
+	position = 180 * Math.random()
+	response.writeHead 200, {'Content-type': "text/plain"}
+	response.end "Moving Servo to #{position}"
+	servo.setPosition position
 
 app.get "/", (request, response) ->
 	response.writeHead 200, 'Content-Type': 'text/html'
