@@ -54,7 +54,7 @@ app.get "/stop", (request, response) ->
 	response.end "Stopping"
 	leftMotor.stop()
 	rightMotor.stop()
-app.get "/servo-port", (request, response) ->
+app.get "/servo", (request, response) ->
 	position = 180 * Math.random()
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Servo to #{position}"
