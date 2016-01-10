@@ -26,10 +26,13 @@
 
 <img src="resources/control-pad.png" usemap="control-pad" />
 <map name="control-pad" id="control-pad">
-	<area shape="rect" class="control-pad-area" coords="300,0,900,300"    href='javascript:$.get("/right/faster");$.get("/left/faster");'/>
-	<area shape="rect" class="control-pad-area" coords="0,200,300,700"    href='javascript:$.get("/right/faster");'/>
-	<area shape="rect" class="control-pad-area" coords="900,200,1200,700" href='javascript:$.get("/left/faster");'/>
-	<area shape="rect" class="control-pad-area" coords="300,400,900,700"  href='javascript:$.get("/right/min");$.get("/left/min");'/>
+	<area shape="rect" class="control-pad-area" coords="300,0,900,100"    href='javascript:$.get("/right/max");$.get("/left/max");'/>
+	<area shape="rect" class="control-pad-area" coords="300,100,900,300"  href='javascript:$.get("/right/faster");$.get("/left/faster");'/>
+	<area shape="rect" class="control-pad-area" coords="0,200,300,700"    href='javascript:$.get("/right/faster");javascript:$.get("/left/slower");'/>
+	<area shape="rect" class="control-pad-area" coords="300,300,900,400"  href='javascript:$.get("/stop");'/>
+	<area shape="rect" class="control-pad-area" coords="900,200,1200,700" href='javascript:$.get("/left/faster");javascript:$.get("/right/slower");'/>
+	<area shape="rect" class="control-pad-area" coords="300,400,900,600"  href='javascript:$.get("/right/slower");$.get("/left/slower");'/>
+	<area shape="rect" class="control-pad-area" coords="300,600,900,700"  href='javascript:$.get("/right/min");$.get("/left/min");'/>
 </map>
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
