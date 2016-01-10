@@ -44,6 +44,14 @@ app.get "/right/max", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Right Max"
 	rightMotor.goMaxSpeed()
+app.get "/left/min", (request, response) ->
+	response.writeHead 200, {'Content-type': "text/plain"}
+	response.end "Moving Left Min"
+	leftMotor.goMinSpeed()
+app.get "/right/min", (request, response) ->
+	response.writeHead 200, {'Content-type': "text/plain"}
+	response.end "Moving Right Min"
+	rightMotor.goMinSpeed()
 app.get "/full-speed", (request, response) ->
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Full Speed"

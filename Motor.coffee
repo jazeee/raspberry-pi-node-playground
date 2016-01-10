@@ -43,6 +43,9 @@ class Motor
 	goMaxSpeed: =>
 		@speed = 99
 
+	goMinSpeed: =>
+		@speed = -99
+
 	stop: =>
 		@speed = 0
 
