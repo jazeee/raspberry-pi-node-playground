@@ -11,8 +11,8 @@ isDebug = false
 
 leftPorts = [16, 18]
 rightPorts = [3, 5]
-servoPort = 7
-ports = [leftPorts..., rightPorts..., servoPort]
+servoPort = 4 #GPIO port, for pin 7
+ports = [leftPorts..., rightPorts...]
 
 leftMotor = new Motor leftPorts
 rightMotor = new Motor rightPorts
