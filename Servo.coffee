@@ -2,6 +2,8 @@ gpio = require "pi-gpio"
 Promise = require "bluebird"
 now = require "performance-now"
 
+Promise.promisifyAll gpio
+
 class Servo
 	constructor: (port) ->
 		@position = 0
