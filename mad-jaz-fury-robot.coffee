@@ -61,7 +61,7 @@ app.get "/stop", (request, response) ->
 	leftMotor.stop()
 	rightMotor.stop()
 app.get "/servo", (request, response) ->
-	position = 180
+	position = 30
 	response.writeHead 200, {'Content-type': "text/plain"}
 	response.end "Moving Servo to #{position}"
 	servoPython servoPort, position

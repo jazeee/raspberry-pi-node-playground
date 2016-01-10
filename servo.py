@@ -12,6 +12,7 @@ delay = float(sys.argv[2])
 print port
 print delay
 
+delay=1300
 
 position = 700
 while position < delay:
