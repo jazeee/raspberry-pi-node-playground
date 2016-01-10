@@ -39,7 +39,7 @@ $("button").click(
 function(event){
 	console.log(event);
 	$.get("/" + event.currentTarget.value)
-	.then (response) -> console.log response
+	.then(function(response){console.log(response);});
 });
 </script>
 </body>
